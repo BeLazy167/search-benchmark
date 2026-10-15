@@ -1,0 +1,18 @@
+# Keep publication source-only. Experiment artifacts may contain private code.
+/*
+!/*.py
+!/README.md
+!/LICENSE
+!/.gitignore
+!/graphify/
+/graphify/*
+!/graphify/run.py
+!/graphify/requirements.lock
+__pycache__/
+*.pyc
+.DS_Store
+.env*
+
+!/docs/
+/docs/*
+!/docs/*.md
