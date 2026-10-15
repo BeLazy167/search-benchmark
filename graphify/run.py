@@ -4,6 +4,7 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import platform
 import shutil
@@ -12,7 +13,7 @@ import subprocess
 import time
 
 HERE = Path(__file__).resolve().parent
-COMMIT = "67f99bd0059dd1bac9e44382907ef9f10098b39f"
+COMMIT = "10130e79ed9caf8f60d998073e097531eaa1a395"
 
 
 def main():
@@ -35,6 +36,7 @@ def main():
         "LANG": "en_US.UTF-8",
         "GRAPHIFY_OUT": str(out / "index" / "graphify-out"),
         "PYTHONHASHSEED": "0",
+        "GRAPHIFY_QUERY_LOG_DISABLE": "1",
         "PYTHONDONTWRITEBYTECODE": "1",
         "OMP_NUM_THREADS": "1",
         "OPENBLAS_NUM_THREADS": "1",
@@ -42,7 +44,7 @@ def main():
     sandbox = shutil.which("sandbox-exec")
     prefix = (
         [sandbox, "-p", "(version 1) (allow default) (deny network*)"]
-        if sandbox
+        if sandbox and os.environ.get("SEARCH_BENCHMARK_OFFLINE") != "1"
         else []
     )
     if not sandbox:
@@ -56,7 +58,7 @@ def main():
         if a.skip_index and result_file.exists()
         else {
             "tool": "graphify",
-            "version": "0.9.56",
+            "version": "0.9.91",
             "commit": COMMIT,
             "platform": platform.platform(),
             "python": platform.python_version(),

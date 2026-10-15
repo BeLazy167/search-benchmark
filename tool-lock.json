@@ -1,0 +1,56 @@
+{
+  "checked_at_utc": "2026-10-15",
+  "assets": [
+    {
+      "name": "ripgrep-15.2.0-aarch64-apple-darwin.tar.gz",
+      "url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-aarch64-apple-darwin.tar.gz",
+      "sha256": "3750b2e93f37e0c692657da574d7019a101c0084da05a790c83fd335bad973e4",
+      "release": "15.2.0",
+      "release_url": "https://github.com/BurntSushi/ripgrep/releases/tag/15.2.0"
+    },
+    {
+      "name": "fff-mcp-aarch64-apple-darwin",
+      "url": "https://github.com/dmtrKovalenko/fff/releases/download/v0.11.0/fff-mcp-aarch64-apple-darwin",
+      "sha256": "cc606d9418cfa7764376dcd7b32a33e6459a6cb9a4718be366b024dca6e9fead",
+      "release": "v0.11.0",
+      "release_url": "https://github.com/dmtrKovalenko/fff/releases/tag/v0.11.0"
+    },
+    {
+      "name": "fff_search-0.11.0-cp310-abi3-macosx_11_0_arm64.whl",
+      "url": "https://github.com/dmtrKovalenko/fff/releases/download/v0.11.0/fff_search-0.11.0-cp310-abi3-macosx_11_0_arm64.whl",
+      "sha256": "4d2296bfe8a60141772fa825003c22856f7b136661f684b8b4d7d9477a4050f5",
+      "release": "v0.11.0",
+      "release_url": "https://github.com/dmtrKovalenko/fff/releases/tag/v0.11.0"
+    },
+    {
+      "name": "codebase-memory-mcp-darwin-arm64.tar.gz",
+      "url": "https://github.com/DeusData/codebase-memory-mcp/releases/download/v0.12.0/codebase-memory-mcp-darwin-arm64.tar.gz",
+      "sha256": "1be41a9dd6902e3633eb0b280189117dc3db3be623bdd3dd4c6ea74372b5a50b",
+      "release": "v0.12.0",
+      "release_url": "https://github.com/DeusData/codebase-memory-mcp/releases/tag/v0.12.0"
+    },
+    {
+      "name": "app-aarch64-apple-darwin.zip",
+      "url": "https://github.com/ast-grep/ast-grep/releases/download/0.51.0/app-aarch64-apple-darwin.zip",
+      "sha256": "e18e13c27ed6c4b3ec4de00745b0755dee9dc26c035e226f4dd5d147dca99cc8",
+      "release": "0.51.0",
+      "release_url": "https://github.com/ast-grep/ast-grep/releases/tag/0.51.0"
+    }
+  ],
+  "source_builds": [
+    {
+      "name": "grep",
+      "version": "3.12",
+      "url": "https://ftpmirror.gnu.org/grep/grep-3.12.tar.xz",
+      "sha256": "2649b27c0e90e632eadcd757be06c6e9a4f48d941de51e7c0f83ff76408a07b9",
+      "checksum_source": "https://formulae.brew.sh/api/formula/grep.json"
+    },
+    {
+      "name": "ugrep",
+      "version": "7.8.5",
+      "url": "https://github.com/Genivia/ugrep/archive/refs/tags/v7.8.5.tar.gz",
+      "sha256": "f080ab6cd9d96a5357570cb60a99e09ebe5eef11cf322c35373dbe815378a1f2",
+      "checksum_source": "https://formulae.brew.sh/api/formula/ugrep.json"
+    }
+  ]
+}
