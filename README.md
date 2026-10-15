@@ -1,10 +1,42 @@
 # Search benchmark
 
-Compare ripgrep, grep, fff, codebase-memory-mcp, and Graphify on the same committed source files. The scripts measure literal-search correctness and latency, graph indexing, and direct Python caller retrieval. Optional experiments measure model answers from search evidence and multi-turn search agents.
+Measure whether a code search returns the right matches, then measure how long it takes. This project compares ripgrep, grep, fff, codebase-memory-mcp, and Graphify on the same committed source files.
 
-This repository contains the benchmark scripts from a September 2026 qBraid workspace experiment. It does **not** include the original source corpus, raw model conversations, generated indexes, or saved results. Build a corpus from repositories you can access. The MIT license covers these scripts, not the repositories you benchmark or the third-party tools.
+[Results](#reported-results) · [Quick start](#quick-start) · [Full report](docs/REPORT.md) · [MIT license](LICENSE)
 
-Historical findings are in [the original report](docs/REPORT.md), [the agent follow-up](docs/AGENT-SEARCH.md), and [the methodology notes](docs/RESEARCH.md). They describe the private dataset, not results on your repositories.
+## Reported results
+
+![Two charts of the September 2026 private-corpus experiment. Literal-search median times: fff SDK 41.5 ms with 31 of 31 exact query sets; fff MCP 65.0 ms with 24 of 31; ripgrep 140.5 ms with 31 of 31; grep 916.5 ms with 31 of 31. Initial graph builds: codebase-memory 16.21 seconds and Graphify 106.70 seconds, both with 12 of 12 correct caller sets.](docs/assets/results.png)
+
+These numbers come from the **September 2026 report**, not a new test run. The experiment used 29 repositories and 11,488 files on one macOS workstation. The original source dataset and raw results are not published, so this repository does not let readers independently verify these historical measurements.
+
+- **Exact text matches:** ripgrep, grep, and fff SDK returned all expected query sets. fff MCP returned 24 of 31, so its time does not represent complete exact search.
+- **Search time:** fff SDK had the lowest reported median on this workload. It kept an index in the Python process; CLI timings included process startup and output parsing.
+- **Caller relationships:** both graph tools found all 12 expected caller sets. The test only covered direct calls between top-level Python functions in the same file.
+- **Limits:** the later [agent follow-up](docs/AGENT-SEARCH.md) found fff SDK whitespace and cold-start problems. This small experiment does not establish a general winner.
+
+See the [full report](docs/REPORT.md) for repetitions, tail latency, tool versions, and model experiments. Read the [methodology notes](docs/RESEARCH.md) before comparing tools.
+
+## How the benchmark works
+
+```mermaid
+flowchart TD
+    A[Your committed Git repositories] --> B[Freeze selected text files]
+    B --> C[One fixed source dataset]
+    C --> D[Search and graph tools]
+    C --> E[Independent expected matches and callers]
+    D --> F[Compare correctness and record time]
+    E --> F
+    F --> G[Local JSON results]
+```
+
+The public repository contains scripts, setup instructions, and historical reports. You provide the source repositories. Generated source copies, indexes, and model conversations stay local and are ignored by Git. The MIT license covers the benchmark scripts, not your source data or third-party tools.
+
+## Share the findings
+
+Share [the repository](https://github.com/BeLazy167/search-benchmark), the [result image](docs/assets/results.png), or the [full report](docs/REPORT.md). Keep the private-data and timing limits with the numbers. Suggested text:
+
+> We published our code-search benchmark scripts and a report from a September 2026 experiment on 29 repositories. fff SDK, ripgrep, and grep returned all 31 expected literal-query sets; fff MCP returned 24. Both graph tools found all 12 tested caller sets. Timing methods differ, and later fff SDK tests found additional edge cases. The source dataset and raw results are private. You can use the scripts with your own repositories: https://github.com/BeLazy167/search-benchmark
 
 ## Requirements
 
