@@ -3,21 +3,24 @@
 
 import argparse
 import json
+import os
 from pathlib import Path
 import random
 import re
+import shutil
+import tempfile
 import time
 from mcp_client import Client, text_result
 
 BASE = Path(__file__).resolve().parent
 
 
-def make_client():
+def make_client(corpus):
     out = BASE / "fff"
-    cmd = [
-        "/usr/bin/sandbox-exec",
-        "-p",
-        "(version 1)(allow default)(deny network*)",
+    prefix = [] if os.environ.get("SEARCH_BENCHMARK_OFFLINE") == "1" else [
+        "/usr/bin/sandbox-exec", "-p", "(version 1)(allow default)(deny network*)"
+    ]
+    cmd = prefix + [
         str(out / "fff-mcp"),
         "--no-update-check",
         "--no-watch",
@@ -27,12 +30,12 @@ def make_client():
         str(out / "mcp-history"),
         "--log-file",
         str(out / "mcp.log"),
-        str(BASE / "corpus"),
+        str(corpus),
     ]
     return Client(
         cmd,
         {"PATH": "/usr/bin:/bin"},
-        str(BASE / "corpus"),
+        str(corpus),
         out / "benchmark-mcp.stderr.txt",
     )
 
@@ -41,15 +44,22 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--repeats", type=int, default=7)
     a = p.parse_args()
+    if a.repeats < 1:
+        p.error("--repeats must be positive")
     paths = {
         f["path"] for f in json.loads((BASE / "manifest.json").read_text())["files"]
     }
     queries = json.loads((BASE / "queries.json").read_text())
+    # fff MCP resolves a containing Git root. Copy outside this checkout so
+    # the benchmark does not accidentally search the benchmark repository.
+    temporary = tempfile.TemporaryDirectory(prefix="fff-corpus-", dir="/private/tmp")
+    corpus = Path(temporary.name) / "corpus"
+    shutil.copytree(BASE / "corpus", corpus)
     start = time.perf_counter()
-    client = make_client()
+    client = make_client(corpus)
     result = {
         "tool": "fff-mcp",
-        "version": "0.10.6",
+        "version": "0.11.0",
         "initialize_seconds": time.perf_counter() - start,
         "semantics": "smart-case + automatic fuzzy fallback, max 10 matches/file; not equivalent to exact grep",
         "trials": [],
@@ -124,6 +134,7 @@ def main():
             (out / (q["id"] + ".txt")).write_text(text)
     finally:
         client.close()
+        temporary.cleanup()
 
 
 if __name__ == "__main__":

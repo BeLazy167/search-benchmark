@@ -21,8 +21,12 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--repeats", type=int, default=7)
     p.add_argument("--smoke", action="store_true")
+    p.add_argument("--ugrep", type=Path, help="Optional ugrep executable")
+    p.add_argument("--gnu-grep", type=Path, help="Optional GNU grep executable")
     p.add_argument("--output", type=Path, default=BASE / "text-results.json")
     a = p.parse_args()
+    if a.repeats < 1:
+        p.error("--repeats must be positive")
     corpus = BASE / "corpus"
     manifest = json.loads((BASE / "manifest.json").read_text())
     for f in manifest["files"]:
@@ -72,6 +76,11 @@ def main():
         ],
         "grep": ["/usr/bin/grep", "-r", "-F", "-n", "-H"],
     }
+    if a.ugrep:
+        commands["ugrep"] = [str(a.ugrep.resolve()), "--no-config", "--color=never", "-r", "-F", "-n", "-H"]
+    if a.gnu_grep:
+        commands["gnu-grep"] = [str(a.gnu_grep.resolve()), "--color=never", "-r", "-F", "-n", "-H"]
+    tool_names = [*commands, "fff-sdk"]
     if not commands["ripgrep"][0]:
         raise RuntimeError("rg missing from PATH")
     env = {"PATH": "/usr/bin:/bin", "LC_ALL": "C"}
@@ -143,7 +152,7 @@ def main():
         results["versions"][tool + "_sha256"] = hashlib.sha256(
             Path(command[0]).read_bytes()
         ).hexdigest()
-    tasks = [(tool, q) for tool in ["ripgrep", "grep", "fff-sdk"] for q in queries]
+    tasks = [(tool, q) for tool in tool_names for q in queries]
     rng = random.Random(617)
     try:
         for trial in range(-1, a.repeats):
@@ -176,7 +185,7 @@ def main():
             print("completed trial", trial, flush=True)
     finally:
         finder.close()
-    for tool in ["ripgrep", "grep", "fff-sdk"]:
+    for tool in tool_names:
         rows = [r for r in results["trials"] if r["tool"] == tool and r["trial"] >= 0]
         print(
             tool,

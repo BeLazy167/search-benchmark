@@ -58,7 +58,11 @@ def main():
     parser.add_argument(
         "--manifest", type=Path, help="Rebuild precisely the recorded commits"
     )
+    parser.add_argument("--exclude-paths", type=Path, help="Private JSON list of repository-relative paths to omit after review")
     args = parser.parse_args()
+    excluded_paths = set(json.loads(args.exclude_paths.read_text())) if args.exclude_paths else set()
+    if args.manifest:
+        excluded_paths.update(json.loads(args.manifest.read_text()).get("policy", {}).get("review_excluded_paths", []))
     dest = args.output / "corpus"
     if dest.exists():
         raise SystemExit(
@@ -98,7 +102,8 @@ def main():
         with tarfile.open(fileobj=p.stdout, mode="r|") as archive:
             for member in archive:
                 if (
-                    not member.isfile()
+                    str(Path(name) / member.name) in excluded_paths
+                    or not member.isfile()
                     or not allowed(member.name)
                     or member.size > 1024 * 1024
                 ):
@@ -154,6 +159,7 @@ def main():
         "corpus_sha256": digest,
         "omissions": omissions,
         "policy": {
+            "review_excluded_paths": sorted(excluded_paths),
             "max_file_bytes": 1048576,
             "extensions": sorted(EXTENSIONS),
             "excluded_parts": sorted(EXCLUDE_PARTS),

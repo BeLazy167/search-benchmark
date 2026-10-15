@@ -1,0 +1,62 @@
+{
+  "checked_at_utc": "2026-10-15",
+  "platform": {
+    "system": "Darwin",
+    "release": "27.0.0",
+    "architecture": "arm64",
+    "macos_version": "27.0",
+    "macos_build": "26A428",
+    "cpu": "Apple M3 Pro",
+    "logical_cpus": 12,
+    "memory_bytes": 19327352832
+  },
+  "binaries": {
+    "ripgrep": {
+      "version_output": "ripgrep 15.2.0 (rev e89fff89ac)",
+      "sha256": "a326a1fb48074202e9ad41e4cd1e389eeea372c8c6f7d7e80da81176d5d9430e"
+    },
+    "bsd-grep": {
+      "version_output": "grep (BSD grep, GNU compatible) 2.6.0-FreeBSD",
+      "sha256": "afc3903988afaa5be7a19d595e66a95ead29cbb5102ff4dd2e4522089871f64a"
+    },
+    "gnu-grep": {
+      "version_output": "grep (GNU grep) 3.12",
+      "sha256": "033865c3012e652079f84faef2751d06b7de9513b6b23cf451ba412f5a38504f"
+    },
+    "ugrep": {
+      "version_output": "ugrep 7.8.5 aarch64-apple-darwin27.0.0 +neon/AArch64; -P:pcre2jit; -z:zlib,bzip2,lzma,lz4,zstd,brotli,7z,tar/pax/cpio/zip",
+      "sha256": "d6c7fa27245e4d23fc4fa3c079c03f3354ad7dea937f566d179b614af9897234"
+    },
+    "fff-mcp": {
+      "version_output": "fff-mcp 0.11.0 (95fd777c2529fc7b4d7572dabff64cc07268f2c5)",
+      "sha256": "cc606d9418cfa7764376dcd7b32a33e6459a6cb9a4718be366b024dca6e9fead"
+    },
+    "codebase-memory-mcp": {
+      "version_output": "codebase-memory-mcp 0.12.0",
+      "sha256": "d26ba94b11b79f727923eaadb811e044a52618ae6d303670df5467f1e6c25015"
+    },
+    "ast-grep": {
+      "version_output": "ast-grep 0.51.0",
+      "sha256": "6e4e64393e1cbc67b68f56606982c2834e9ffe771cf10d4811de0f4d15ee3a6d"
+    }
+  },
+  "graphify": {
+    "version": "0.9.91",
+    "commit": "10130e79ed9caf8f60d998073e097531eaa1a395",
+    "mode": "AST only, no clustering, four workers, HCL parser installed"
+  },
+  "fff-sdk": {
+    "version": "0.11.0",
+    "wheel_sha256": "4d2296bfe8a60141772fa825003c22856f7b136661f684b8b4d7d9477a4050f5"
+  },
+  "python": "Python 3.13.1",
+  "security": {
+    "downloads_verified": true,
+    "corpus_secret_scan_findings": 0,
+    "network_policy": "IP networking denied; Unix IPC allowed only for codebase-memory runner",
+    "credentials_inherited": false,
+    "home_directory_access": "denied by offline.py",
+    "model_provider_calls": 0,
+    "published_data": "numeric aggregates and public tool provenance only"
+  }
+}

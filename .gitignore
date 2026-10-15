@@ -21,3 +21,8 @@ __pycache__/
 !/docs/assets/
 /docs/assets/*
 !/docs/assets/results.png
+
+!/tool-lock.json
+!/docs/versions-2026-10-15.json
+!/docs/results-2026-10-15.json
+!/docs/assets/results-2026-10-15.png
